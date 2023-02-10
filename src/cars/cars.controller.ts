@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, ParseUUIDPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
 import { CarsService } from './cars.service';
-import { CreateCarDto } from './dto/create-car.dto';
+import { CreateCarDto, UpdateCarDto } from './dto';
+
 
 @Controller('cars')
 export class CarsController {
@@ -52,7 +53,7 @@ export class CarsController {
     /**
      * Cuando es llamado este metodo, primero tiene que confirmar la informacion 
      * esto segun lo definido en CreateCarDto, entonces despues de validar podemos 
-     * estar seguros de que lo que viene esta okey
+     * estar seguros de que lo que viene esta validado
      */
     @Post()
     createCar(@Body() createCarDto: CreateCarDto) {
@@ -60,21 +61,14 @@ export class CarsController {
     }
 
     @Patch(':id')
-    patchCar(
-        @Body() body,
-        @Param('id') id: string) {
-        return {
-            id,
-            body,
-            method: 'PATCH'
-        }
+    updateCar(
+        @Param('id', ParseUUIDPipe) id: string,
+        @Body() updateCarDto: UpdateCarDto,) {
+        return this.carsService.update(id, updateCarDto)
     }
 
     @Delete(':id')
-    deleteCar(@Param('id', ParseIntPipe) id: string) {
-        return {
-            id,
-            method: 'DELETE'
-        }
+    deleteCar(@Param('id', ParseUUIDPipe) id: string) {
+        return this.carsService.delete(id)
     }
 }
