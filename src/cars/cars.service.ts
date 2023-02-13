@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Car } from './interfaces/car.interface';
 import { v4 as uuid } from 'uuid'
+import { Car } from './interfaces/car.interface';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 
@@ -10,21 +10,12 @@ export class CarsService {
 
 
     private cars: Car[] = [
-        {
-            id: uuid(),
-            brand: 'Toyota',
-            model: 'Corolla'
-        },
-        {
-            id: uuid(),
-            brand: 'Honda',
-            model: 'Civic'
-        },
-        {
-            id: uuid(),
-            brand: 'Jeep',
-            model: 'Cherokee'
-        }
+        // {
+        //     id: uuid(),
+        //     brand: 'Toyota',
+        //     model: 'Corolla'
+        // },
+    
     ]
 
     findAll() {
@@ -78,5 +69,9 @@ export class CarsService {
 
         this.cars = this.cars.filter(car => car.id !== id);
     }
+
+    fillCarsWithSeedData( cars : Car[]){
+        this.cars = cars
+      }
 }
 
